@@ -1,0 +1,57 @@
+#pragma GCC optimize ("-O3")
+#include<bits/stdc++.h>
+using namespace std;
+#define ll long long int
+#define mod 1000000007
+#define pb push_back
+#define eb emplace_back
+int main()
+{
+	int t;
+	cin>>t;
+	while(t--)
+	{
+		int n;
+		cin>>n;
+		int par[n+1],s[n+1];
+		for(int i=1;i<=n;i++)
+			par[i]=i,cin>>s[i];
+		int q;
+		cin>>q;
+		while(q--)
+		{
+			int x;
+			cin>>x;
+			if(x)
+			{
+				int y;
+				cin>>y;
+				while(par[y]!=y)
+				{
+					par[y]=par[par[y]];
+					y=par[y];
+				}
+				cout<<y<<endl;
+			}
+			else
+			{
+				int p1,p2;
+				cin>>p1>>p2;
+				while(par[p1]!=p1)
+					par[p1]=par[par[p1]],p1=par[p1];
+				while(par[p2]!=p2)
+					par[p2]=par[par[p2]],p2=par[p2];
+				if(p1==p2)
+					cout<<"Invalid query!"<<endl;
+				else
+				{
+					if((s[p1]>s[p2]))
+					par[p2]=p1;
+					else if(s[p2]>s[p1])
+						par[p1]=p2;
+					//cout<<p1<<" "<<p2<<endl;
+				}
+			}
+		}
+	}
+}

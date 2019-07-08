@@ -1,0 +1,62 @@
+#include<bits/stdc++.h>
+using namespace std;
+#define pb push_back
+#define eb emplace_back
+#define ll long long int
+#define IOS ios::sync_with_stdio(0);cin.tie(0);cout.tie(0);
+#define mod 1000000007
+#define endl "\n"
+bool sortbysec(const pair<ll,pair  <ll,ll> > &a,
+              const pair<ll,pair  <ll,ll> > &b)
+{
+    return (a.first > b.first);
+}
+int main()
+{
+	IOS
+	//n==1
+	int t;
+	cin>>t;
+	while(t--)
+	{
+		int n,d;
+		cin>>n>>d;
+		set<ll>s,s1;
+		for(int  i=1;i<=d;i++)
+			s.insert(i);
+		vector< pair < ll , pair < ll, ll > > > v;
+		for(int i=0;i<n;i++)
+		{
+			ll a,b,c;
+			cin>>a>>b>>c;
+			v.pb({c,{a,b}});
+		}
+		sort(v.begin(),v.end(),sortbysec);
+		ll ans=0;
+		//for(int i=0;i<v.size();i++)
+			//cout<<v[i].first<<" "<<v[i].second.first<<" "<<v[i].second.second<<"\n";
+		for(int i =0;i<v.size();i++)
+		{
+			 ll a = v[i].first;
+			 ll b = v[i].second.first;
+			 ll c = v[i].second.second;
+			 auto it = s.lower_bound(b);
+			// cout<<*it<<endl;
+			 ll z=0;
+			 set<ll> s2;
+			 for (auto k = it;k!=s.end();k++)
+			 {
+			 	s2.insert(*k);
+			 	//s.erase(*k);
+			 	z++;
+			 	if(z==c)
+			 		break;
+			 }
+			 for(auto it = s2.begin();it!=s2.end();it++)
+			 	s.erase(*it);
+			 ans += (c-z)*a;
+		}
+		cout<<ans<<endl;
+	
+	}
+}

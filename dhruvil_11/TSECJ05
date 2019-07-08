@@ -1,0 +1,57 @@
+#include<bits/stdc++.h>
+using namespace std;
+#define pb push_back
+#define eb emplace_back
+#define ll long long int
+#define IOS ios::sync_with_stdio(0);cin.tie(0);cout.tie(0);
+#define mod 1000000007
+#define endl "\n"
+bool sortbysec(const pair<int,int> &a,
+              const pair<int,int> &b)
+{
+    return (a.second < b.second);
+}
+int main()
+{
+	IOS
+	//n==1
+	int t;
+	cin>>t;
+	while(t--)
+	{
+		int k,n;
+		cin>>k>>n;
+		multiset<int>s;
+		int y;
+		for(int i=0;i<n;i++)
+		{
+			int x;
+			cin>>x;
+			
+			if(i<k-1)
+				{
+					cout<<-1<<" ";
+					s.insert(x);
+				}
+			if(i==k-1)
+			{
+				s.insert(x);
+				 y = *s.begin();
+				cout<<y<<" ";
+			}
+			if(i>k-1)
+			{
+				s.insert(x);
+				if(x>y)
+					{
+						s.erase(y);
+						y=*s.lower_bound(y);
+					}
+
+				cout<<y<<" ";
+			}	
+		}
+		cout<<endl;
+	}
+	
+}

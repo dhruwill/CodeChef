@@ -1,0 +1,55 @@
+#include<bits/stdc++.h>
+using namespace std;
+#define pb push_back
+#define ll long long int
+#define IOS ios::sync_with_stdio(0);cin.tie(0);cout.tie(0);
+#define mod 1000000007
+bool sortbysec(const pair<int,int> &a,
+              const pair<int,int> &b)
+{
+    return (a.second < b.second);
+}
+int main()
+{
+	IOS
+	//n==1
+	int t;
+	cin>>t;
+	while(t--)
+	{
+		ll l , r, g;
+		cin>>l>>r>>g;
+		if(g>r)
+		{
+			cout<<0<<"\n";
+			continue;
+		}
+		if(r==l && l!=g)
+		{
+		    cout<<0<<"\n";
+		    continue;
+		}
+		
+		ll i = ceil((long double)l/g);
+		ll la =(r/g);
+		//cout<<setprecision(6)<<(double)l/g<<" "<<i<<"\n"<<la<<endl;
+		if(la==0)
+		{
+			cout<<0<<"\n";
+			continue;
+		}
+		else if(la<i)
+		{
+			cout<<0<<"\n";
+			continue;
+		}
+		else if(la==i  && i!=1)
+			{
+			cout<<0<<"\n";
+			continue;
+		}
+		else{
+		ll ans = (la-i)+1;
+		cout<<ans<<"\n";}
+	}
+}

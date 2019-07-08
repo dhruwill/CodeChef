@@ -1,0 +1,149 @@
+#pragma GCC optimize ("-O3")
+#include<bits/stdc++.h>
+using namespace std;
+#define testcase(t) int t;cin>>t;while(t--)
+#define pb push_back
+#define eb emplace_back
+#define ll long long int
+#define IOS ios::sync_with_stdio(0);cin.tie(0);cout.tie(0);
+#define mod 1000000007
+#define endl "\n"
+#define imax INT_MAX
+#define imin INT_MIN
+bool sortbysec(const pair<int,int> &a,
+              const pair<int,int> &b)
+{
+    return (a.second < b.second);
+}
+void constructTree(int input[], int segtree[],int low,int high,int pos)
+{
+	if(low==high)
+	{
+		segtree[pos]=input[low];
+		return ;
+	}
+	int mid = (low+high)/2;
+	constructTree(input,segtree,low,mid,2*pos+1);
+	constructTree(input,segtree,mid+1,high,2*pos+2);
+	segtree[pos]=max(segtree[2*pos+1],segtree[2*pos+2]);
+}
+int range_min_Query(int segtree[],int ql,int qh,int low,int high,int pos)
+{
+	if(ql<=low and qh >= high)
+	{
+		return segtree[pos];
+	}
+	if(ql>high or qh<low)
+	{
+		return imin;
+	}
+	int mid = (low+high)/2;
+	return max(range_min_Query(segtree,ql,qh,low,mid,2*pos+1),range_min_Query(segtree,ql,qh,mid+1,high,2*pos+2));
+}
+void updateNode(int segtree[],int index , int low,int high,int x,int pos)
+{
+	if(low==high)
+	{
+		segtree[pos] = x;
+	}
+	else
+	{
+		int mid = (low+high)/2;
+		if(index<=mid)
+			updateNode(segtree,index,low,mid,x,2*pos+1);
+		else
+			updateNode(segtree,index,mid+1,high,x,2*pos+2);
+		segtree[pos]=max(segtree[2*pos+1],segtree[2*pos+2]);
+	}
+}
+/*void updateLazy(int segtree[],int lazy[],int srange,int erange,int delta,int low, int high int pos)
+{
+	if(low>high)
+	{
+		return ;
+	}
+	if(lazy[pos]!=0)
+	{
+		segtree[pos]+=lazy[pos];
+		if(low!=high)
+		{
+			lazy[2*pos+1]=lazy[pos];
+			lazy[2*pos+2]=lazy[pos];
+		}
+		lazy[pos]=0;
+	}
+	if(srange>high or erange<low)
+		return;
+	if(srange<=low and erange>=high)
+	{
+		segtree[pos]+=delta;
+		if(low!=high)
+		{
+			lazy[2*pos+1] += delta;
+			lazy[2*pos+2] += delta;
+		}
+		return;
+	}
+	//otherwise partial overlap so look both left and right
+	int mid  = (low+high)/2;
+	updateLazy(segtree,lazy,srange,erange,delta,low,mid,2*pos+1);
+	updateLazy(segtree,lazy,srange,erange,delta,mid+1,high,2*pos+2);
+	segtree[pos]=min(segtree[2*pos+1],segtree[2*pos+2]);
+}
+void range_min_QueryLazy(int segtree[],int lazy[],int ql,int qh,int low,int high,int pos)
+{
+	if(low>high)
+		return imax;
+	if(lazy[pos]!=0)
+	{
+		segtree[pos]+=lazy[pos];
+		if(low!=high)
+		{
+			lazy[2*pos+1]=lazy[2*pos+2]=lazy[pos];
+		}
+		lazy[pos]=0;
+	}
+	if(qh<low or ql>high)
+		return imax;
+	if(ql<=low and qh>=high)
+		return segtree[pos];
+	int mid = (low+high)/2;
+	return min(range_min_QueryLazy(segtree,lazy,ql,qh,low,mid,2*pos+1),range_min_QueryLazy(segtree,lazy,ql,qh,mid+1,high,2*pos+2))
+}*/
+int main()
+{
+	IOS
+	//n==1
+	testcase(t){
+		int n,q;
+		cin>>n>>q;
+		int input[n],segtree[4*n];
+		for(int i=0;i<n;i++)
+			input[i]=i+1;
+		constructTree(input,segtree,0,n-1,0);
+		ll s=0;
+		while(q--)
+		{
+			int x;
+			cin>>x;
+			if(x==1)
+			{
+				int y;cin>>y;y=y+s;
+				updateNode(segtree,y-1,0,n-1,0,0);
+			}
+			else
+			{
+				int l,r;
+				cin>>l>>r;
+				l+=s;
+				r+=s;
+				int z = range_min_Query(segtree,l-1,r-1,0,n-1,0);
+				cout<<z<<endl;
+				s+=z;
+				s%=n;
+			}
+
+		}
+	}
+	
+}
